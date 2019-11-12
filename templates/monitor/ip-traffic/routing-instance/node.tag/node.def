@@ -1,0 +1,8 @@
+help: Run ip-traffic on routing-instance
+allowed:
+  rdnodes="$(${vyatta_sbindir}/getvrflist | awk '{print $1}')"
+  for rd in $rdnodes; do
+    echo "$rd"
+  done
+run: mkdir -p /var/log/iptraf-ng
+     chvrf "$4" iptraf-ng

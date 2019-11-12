@@ -1,0 +1,4 @@
+help: Argument
+include: /spawn/node.tag
+run: ${@:2}
+local: true

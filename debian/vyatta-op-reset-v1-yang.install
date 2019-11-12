@@ -1,0 +1,2 @@
+opt/vyatta/share/vyatta-op/templates/reset/node.def
+usr/share/configd/yang/vyatta-op-reset-v1.yang

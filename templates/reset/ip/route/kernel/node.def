@@ -1,0 +1,2 @@
+help: Reset IP kernel route
+run: vtysh -c "clear ip route kernel"

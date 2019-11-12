@@ -1,0 +1,182 @@
+module vyatta-op-traceroute-v1 {
+	namespace "urn:vyatta.com:mgmt:vyatta-op-traceroute:1";
+	prefix vyatta-op-traceroute-v1;
+
+	import vyatta-opd-extensions-v1 {
+		prefix opd;
+	}
+	import vyatta-types-v1 {
+		prefix types;
+	}
+
+	organization "AT&T Inc.";
+	contact
+		"AT&T
+		 Postal: 208 S. Akard Street
+		 Dallas, TX 75202
+		 Web: www.att.com";
+
+	description
+		"Copyright (c) 2019, AT&T Intellectual Property.
+		 All rights reserved.
+
+		 Redistribution and use in source and binary forms, with or without
+		 modification, are permitted provided that the following conditions
+		 are met:
+
+		 1. Redistributions of source code must retain the above copyright
+		    notice, this list of conditions and the following disclaimer.
+		 2. Redistributions in binary form must reproduce the above
+		    copyright notice, this list of conditions and the following
+		    disclaimer in the documentation and/or other materials provided
+		    with the distribution.
+		 3. Neither the name of the copyright holder nor the names of its
+		    contributors may be used to endorse or promote products derived
+		    from this software without specific prior written permission.
+
+		 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+		 'AS IS' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+		 LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+		 FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+		 COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+		 INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+		 BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+		 LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+		 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+		 LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+		 ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+		 POSSIBILITY OF SUCH DAMAGE.
+
+		 SPDX-License-Identifier: BSD-3-Clause
+
+		 Defines the 'traceroute' operational CLI";
+
+	revision 2019-03-13 {
+		description "Initial version";
+	}
+
+	grouping traceroute-options {
+		opd:argument flags {
+			type enumeration {
+				enum as-path {
+					opd:help "Perform AS path lookups";
+				}
+				enum bypass-routing {
+					opd:help "Bypass routing table";
+				}
+				enum debug-socket {
+					opd:help "Enable socket level debugging";
+				}
+				enum icmp-echo {
+					opd:help "Use ICMP ECHO for probes";
+				}
+				enum icmp-extensions {
+					opd:help "Show ICMP extensions";
+				}
+				enum no-fragment {
+					opd:help "Do not fragment probe packets";
+				}
+				enum tcp-syn {
+					opd:help "Use TCP SYN for probes";
+				}
+				enum version {
+					opd:help "Print version";
+				}
+			}
+		}
+		opd:option first-ttl {
+			opd:help "Maximum packet lifetime";
+			type uint8;
+		}
+		opd:option gateway {
+			opd:help "Route probe through specified gateway";
+			type types:host;
+		}
+		opd:option interface {
+			opd:help "Specify interface to send probes";
+			type types:interface-ifname;
+		}
+		opd:option interval {
+			opd:help "Number of seconds to wait between requests";
+			type uint32;
+		}
+		opd:option max-ttl {
+			opd:help "Specify max number of hops";
+			type uint8;
+		}
+		opd:option num-queries {
+			opd:help "Number of probe packets per hop";
+			type uint8;
+		}
+		opd:option port {
+			opd:help "Specify destination port base";
+			type uint16;
+		}
+		opd:option seq-queries {
+			opd:help "Number of simultaneous probe packets";
+			type uint32;
+		}
+		opd:option source-addr {
+			opd:help "Alternative source address";
+			type types:host;
+		}
+		opd:option tos {
+			opd:help "Mark packets with specified TOS";
+			type uint8;
+		}
+		opd:option wait-time {
+			opd:help "Time (s) to wait for a response";
+			type uint32;
+		}
+	}
+
+	opd:command traceroute {
+		opd:help "Track network path to node";
+		opd:argument host {
+			opd:help "Track network path to specified node";
+			opd:repeatable true;
+			opd:inherit "" {
+				opd:on-enter 'traceroute.pl ${@:2}';
+				opd:privileged true;
+			}
+			type types:host;
+			uses traceroute-options;
+		}
+		opd:command ipv4 {
+			opd:help "Track network path to <hostname|IPv4 address>";
+			opd:argument host {
+				opd:help "Track network path to specified <hostname|IPv4 address>";
+				opd:repeatable true;
+				opd:inherit "" {
+					opd:on-enter 'traceroute.pl ${@:2}';
+					opd:privileged true;
+				}
+				type union {
+					type types:domain-name;
+					type types:ipv4-address;
+				}
+				uses traceroute-options;
+			}
+		}
+		opd:command ipv6 {
+			opd:help "Track network path to <hostname|IPv6 address>";
+			opd:argument host {
+				opd:help "Track network path to specified <hostname|IPv6 address>";
+				opd:repeatable true;
+				opd:inherit "" {
+					opd:on-enter 'traceroute.pl ${@:2}';
+					opd:privileged true;
+				}
+				type union {
+					type types:domain-name;
+					type types:ipv6-address;
+				}
+				uses traceroute-options;
+			}
+		}
+		opd:command version {
+			opd:help "Print version";
+			opd:on-enter '/usr/bin/traceroute -V';
+		}
+	}
+}

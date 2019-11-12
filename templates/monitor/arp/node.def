@@ -1,0 +1,2 @@
+help: Monitor Address Resolution Protocol (ARP)
+run: ip -4 monitor neigh

@@ -1,0 +1,166 @@
+module vyatta-op-ping-v1 {
+	namespace "urn:vyatta.com:mgmt:vyatta-op-ping:1";
+	prefix vyatta-op-ping-v1;
+
+	import vyatta-opd-extensions-v1 {
+		prefix opd;
+	}
+	import vyatta-types-v1 {
+		prefix types;
+	}
+
+	organization "AT&T Inc.";
+	contact
+		"AT&T
+		 Postal: 208 S. Akard Street
+		 Dallas, TX 75202
+		 Web: www.att.com";
+
+	description
+		"Copyright (c) 2019, AT&T Intellectual Property.
+		 All rights reserved.
+
+		 Redistribution and use in source and binary forms, with or without
+		 modification, are permitted provided that the following conditions
+		 are met:
+
+		 1. Redistributions of source code must retain the above copyright
+		    notice, this list of conditions and the following disclaimer.
+		 2. Redistributions in binary form must reproduce the above
+		    copyright notice, this list of conditions and the following
+		    disclaimer in the documentation and/or other materials provided
+		    with the distribution.
+		 3. Neither the name of the copyright holder nor the names of its
+		    contributors may be used to endorse or promote products derived
+		    from this software without specific prior written permission.
+
+		 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+		 'AS IS' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+		 LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+		 FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+		 COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+		 INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+		 BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+		 LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+		 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+		 LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+		 ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+		 POSSIBILITY OF SUCH DAMAGE.
+
+		 SPDX-License-Identifier: BSD-3-Clause
+
+		 Defines the 'ping' operational CLI";
+
+	revision 2019-03-25 {
+		description "Initial version";
+	}
+
+	opd:command ping {
+		opd:help "Send Internet Control Message Protocol (ICMP) echo request";
+		opd:argument host {
+			opd:on-enter '${vyatta_bindir}/ping ${@:2}';
+			opd:help "Host name or IP address";
+			opd:repeatable true;
+			opd:inherit "" {
+				opd:on-enter '${vyatta_bindir}/ping ${@:2}';
+				opd:privileged true;
+			}
+			type types:host;
+
+			opd:argument flags {
+				type enumeration {
+					enum adaptive {
+						opd:help "Adaptively set interpacket interval";
+					}
+					enum allow-broadcast {
+						opd:help "Ping broadcast address";
+					}
+					enum audible {
+						opd:help "Make a noise on ping";
+					}
+					enum bypass-route {
+						opd:help "Bypass normal routing tables";
+					}
+					enum flood {
+						opd:help "Send 100 requests per second";
+					}
+					enum no-loopback {
+						opd:help "Suppress loopback of multicast pings";
+					}
+					enum numeric {
+						opd:help "Do not resolve DNS names";
+					}
+					enum quiet {
+						opd:help "Only print summary message";
+					}
+					enum record-route {
+						opd:help "Record route the packet takes";
+					}
+					enum timestamp {
+						opd:help "Print timestamp of output";
+					}
+					enum verbose {
+						opd:help "Verbose output";
+					}
+				}
+			}
+			opd:option count {
+				opd:help "Number of requests to send";
+				type uint32;
+			}
+			opd:option deadline {
+				opd:help "Number of seconds before ping exits";
+				type uint32;
+			}
+			opd:option ether-size {
+				opd:help "Number of bytes to send including the Ethernet encapsulation";
+				type uint16;
+			}
+			opd:option interface {
+				opd:help "IP address/interface to use as source";
+				type union {
+					type types:ip-address;
+					type types:interface-ifname;
+				}
+			}
+			opd:option interval {
+				opd:help "Number of seconds to wait between requests";
+				type string;
+			}
+			opd:option mark {
+				opd:help "Mark request for special processing";
+				type uint32;
+			}
+			opd:option mtu-discovery {
+				opd:help "Select Path MTU Discovery strategy";
+				type enumeration {
+					enum do {
+						opd:help "Prohibit fragmentation, even local one";
+					}
+					enum dont {
+						opd:help "Do not set DF flag";
+					}
+					enum want {
+						opd:help "Do PMTU discovery, fragment locally when packet size is large";
+					}
+				}
+			}
+			opd:option pattern {
+				opd:help "Pattern to fill out the packet";
+				type string;
+			}
+			opd:option size {
+				opd:help "Number of bytes to send";
+				type uint16;
+			}
+			opd:option tos {
+				opd:help "Mark packets with specified TOS";
+				type uint8;
+			}
+			opd:option ttl {
+				opd:help "Maximum packet lifetime";
+				type uint8;
+			}
+		}
+	}
+}

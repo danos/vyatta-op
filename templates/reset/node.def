@@ -1,0 +1,3 @@
+# Note - This file is needed for backward compatibility with op-mode commands
+# under vyatta-op/templates. The help for the show command comes from
+# vyatta-op-reset-v1.yang

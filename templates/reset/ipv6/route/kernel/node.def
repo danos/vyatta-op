@@ -1,0 +1,2 @@
+help: Reset IPv6 kernel route
+run: vtysh -c "clear ipv6 route kernel"

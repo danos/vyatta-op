@@ -1,0 +1,2 @@
+opt/vyatta/share/vyatta-op/templates/clear
+usr/share/configd/yang/vyatta-op-clear-v1.yang

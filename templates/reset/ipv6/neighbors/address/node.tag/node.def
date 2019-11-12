@@ -1,0 +1,3 @@
+help: Clear ND cache for an IPv6 address
+allowed: echo -n '<h:h:h:h:h:h:h:h>'
+run: ${vyatta_bindir}/nbr-res-flush.pl --address "$5" --ipv6

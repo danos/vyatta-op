@@ -1,0 +1,105 @@
+#! /bin/bash
+#
+# Copyright (c) 2018-2019 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2016 Brocade Communications Systems, Inc.
+# All rights reserved
+#
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# This code is used for displaying the kernel route table when used following
+# commands in CLI with routing-instance
+# * show ip route routing-instance <rt-instance> forward [<x.x.x.x/x>]
+# * show ipv6 route routing-instance <rt-instance> forward [<h:h:h:h:h:h:h:h/x>]
+
+banner=1
+
+function print_routes()
+{
+    rd=$1
+    shift
+    [[ "$@" ]] || return
+    [[ "$banner" ]] && echo "Kernel route table for routing-instance \"$rd\""
+
+    # The kernel does not remove connected routes for interfaces when dataplane
+    # on carrier down sends IF_OPER_DORMANT. The RIB in this case sends netlink
+    # RTM_DELROUTE, but only for global and not link-local connected routes.
+    # While the fe80::/64 routes in the kernel are not relevant for forwarding,
+    # adjust the output here to remove them for consistency with that of RIB.
+
+    if [ "$ip_version" == "ipv6" ]; then
+        nc_intfs=$(ip link show | grep NO-CARRIER | awk -F '[:@]' '{print $2}')
+        if [[ "$nc_intfs" ]]; then
+            IFS=$'\n'
+            for route in $@; do
+                intf=$(echo "$route" | cut -d ' ' -f3)
+                re="\b$intf\b"
+                [[ ! "$nc_intfs" =~ $re ]] && echo $route
+            done
+        else
+            echo "$@"
+        fi
+    else
+         echo "$@"
+    fi
+}
+
+function find_vrf_routes()
+{
+    r=$1
+    shift
+
+    # strip rdid, local and default unreachable routes from the output
+    rdid="s/[[:blank:]]rdid[[:blank:]][0-9][0-9]*[[:blank:]]//"
+    local="/^\(anycast\|broadcast\|local\|::1 dev vrf\|127\.0\.0\.0\/8 dev vrf\)/d"
+    unreach="/unreachable default.*metric 4278198272/d"
+    for rd in "$@"; do
+        table=$(/opt/vyatta/sbin/getvrftable --pbr-table $rd 254)
+        routes=$(eval "/usr/sbin/chvrf $rd ip $ARGS route list table $table $r" | sed -e "$rdid" -e "$local" -e "$unreach")
+        print_routes "$rd" "${routes[@]}"
+    done
+}
+
+function find_routes()
+{
+    if [[ "$1" == "all" ]]; then
+        routes=$(eval "ip $ARGS route list $2")
+        print_routes "default" "${routes[@]}"
+        eval "rdnodes=($(cli-shell-api listActiveNodes routing routing-instance))"
+    else
+        rdnodes=("$1")
+    fi
+
+    find_vrf_routes "$2" "${rdnodes[@]}"
+}
+
+for option in "$@"
+do
+    case $option in
+        --version=*)
+            ip_version="${option#*=}"
+            shift
+            ;;
+        --route=*)
+            route="${option#*=}"
+            shift
+            ;;
+        --rt_inst=*)
+            routing_instance="${option#*=}"
+            shift
+            ;;
+        *)
+            echo "show_route_forward: Unknown argument $option";
+            usage
+            ;;
+    esac
+done
+
+[[ "$route" ]] && ARGS="-s"
+[[ "$ip_version" ]] && [[ "$ip_version" == "ipv6" ]] && ARGS=$ARGS" -f inet6"
+
+if [ -z "$routing_instance" ]; then
+    routing_instance="default"
+    unset banner
+fi
+
+find_routes "$routing_instance" "$route"

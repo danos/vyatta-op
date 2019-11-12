@@ -1,0 +1,7 @@
+/*.debhelper
+/autoreconf.*
+/debhelper-build-stamp
+/vyatta-op-network-routing-instance/
+/vyatta-op-network/
+/vyatta-op-routing-instance-v1-yang/
+/vyatta-op-v1-yang/

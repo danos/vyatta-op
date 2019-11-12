@@ -1,0 +1,19 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+# Build as relocatable
+export DEB_BUILD_HARDENING=1
+
+%:
+	dh $@ --with=autoreconf --with=config-package --with=yang
+
+cfg_opts := --prefix=/opt/vyatta
+cfg_opts += --sysconfdir=\$${prefix}/etc
+cfg_opts += --mandir=\$${prefix}/share/man
+cfg_opts += --infodir=\$${prefix}/share/info
+
+override_dh_auto_configure:
+	dh_auto_configure -- $(cfg_opts)
+
+override_dh_auto_test:

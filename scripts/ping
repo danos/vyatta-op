@@ -1,0 +1,174 @@
+#! /usr/bin/perl
+# Wrapper around the base Linux ping command to provide
+#  nicer API (ie no flag arguments)
+#
+# **** License ****
+# Copyright (c) 2017-2019, AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2014-2016 by Brocade Communications Systems, Inc.
+# All rights reserved.
+#
+# This code was originally developed by Vyatta, Inc.
+# Portions created by Vyatta are Copyright (C) 2012-2013 Vyatta, Inc.
+# All Rights Reserved.
+#
+# SPDX-License-Identifier: GPL-2.0-only
+# **** End License ****
+#
+# Syntax
+#   ping HOST
+#           [ audible ]
+#           [ adaptive ]
+#           [ allow-broadcast]
+#           [ count REQUESTS ]
+#           [ mark N ]
+#           [ ether-size SIZE ]
+#           [ flow LABEL ]
+#           [ flood ]
+#           [ interval ]
+#           [ mtu-discovery do/want/dont ]
+#           [ pattern PATTERN ]
+#           [ timestamp ]
+#           [ tos VALUE ]
+#           [ quiet ]
+#           [ bypass-routing ]
+#           [ size SIZE ]
+#           [ ttl TTL ]
+#           [ verbose ]
+
+use strict;
+use warnings;
+use NetAddr::IP;
+use Data::Validate::IP qw(is_linklocal_ipv6);
+use feature ":5.10";
+
+# Table for translating options to arguments
+my %options = (
+    'audible'          => 'a',
+    'adaptive'         => 'A',
+    'allow-broadcast'  => 'b',
+    'bypass-route'     => 'r',
+    'count'            => 'c:',
+    'deadline'         => 'w:',
+    'ether-size'       => 'e:',
+    'flood'            => 'f',
+    'interface'        => 'I:',
+    'interval'         => 'i:',
+    'mark'             => 'm:',
+    'mtu-discovery'    => 'M:',
+    'numeric'          => 'n',
+    'no-loopback'      => 'L',
+    'pattern'          => 'p:',
+    'timestamp'        => 'D',
+    'tos'              => 'Q:',
+    'quiet'            => 'q',
+    'record-route'     => 'R',
+    'size'             => 's:',
+    'ttl'              => 't:',
+    'verbose'          => 'v',
+);
+
+my $rti;
+my @new_argv;
+while (scalar @ARGV) {
+    $_ = shift @ARGV;
+    if ($_ eq "routing-instance") {
+        $rti = shift @ARGV;
+        next;
+    }
+    push @new_argv, $_;
+}
+
+@ARGV = @new_argv;
+
+exec "/usr/sbin/chvrf", $rti, "/opt/vyatta/bin/ping", @ARGV
+  if (defined $rti);
+
+# First argument is host
+my $host = shift @ARGV;
+die "ping: Missing host\n"
+  unless defined($host);
+my $ip = new NetAddr::IP $host;
+die "ping: Unknown host: $host\n"
+  unless defined($ip);
+
+my $cmd;
+my $ip_hlen;
+my $icmp_hlen = 8;
+my $ip6_ll    = 0;
+if ( $ip->version == 6 ) {
+    $cmd     = '/bin/ping6';
+    $ip_hlen = 40;
+
+    if ( is_linklocal_ipv6($host) ) {
+        $ip6_ll = 1;
+    }
+
+} else {
+    $cmd     = '/bin/ping';
+    $ip_hlen = 20;
+}
+
+my $size;
+my $ether_size;
+my $int_spcfd;
+my @cmdargs   = ();
+my $args      = [ 'ping', $host, @ARGV ];
+shift @$args;
+shift @$args;
+
+while ( my $arg = shift @$args ) {
+    my $pingarg = $options{$arg};
+    die "ping: unknown option $arg\n"
+      unless $pingarg;
+
+    my $flag = "-" . substr( $pingarg, 0, 1 );
+    push @cmdargs, $flag;
+
+    if ( rindex( $pingarg, ':' ) != -1 ) {
+        my $optarg = shift @$args;
+        die "ping: missing argument for $arg option\n"
+          unless defined($optarg);
+        if ( "s:" eq $pingarg ) { $size = 1; }
+        if ( "e:" eq $pingarg ) {
+            $ether_size = 1;
+            pop @cmdargs;
+            push @cmdargs, "-s";
+            $optarg = $optarg - $ip_hlen - $icmp_hlen;
+        }
+        if ( "I:" eq $pingarg ) {
+            if ( $optarg =~ /^lo[0-9]/ ) {
+                pop @cmdargs;
+                push @cmdargs, "-Z";
+            }
+            $int_spcfd = 1;
+        }
+        if ( "Q:" eq $pingarg ) {
+            die "tos value $optarg is not a valid decimal or hex number\n"
+              unless ( $optarg =~ /^0?[xX]?[\dA-Fa-f]+$/);
+            $optarg = sprintf( "0x%x", $optarg )
+              if ( $optarg =~ /^\d+$/ );
+        }
+        push @cmdargs, $optarg;
+    }
+}
+
+if ( $ip6_ll && !$int_spcfd ) {
+    print "\nSpecify outgoing interface: ";
+    my $out_iface = <STDIN>;
+    chomp($out_iface);
+    die "ping: Outgoing interface not specified.\n"
+      if ( $out_iface eq "" );
+
+    if ( $out_iface =~ /^lo[0-9]/ ) {
+        push @cmdargs, "-Z", $out_iface;
+    } else {
+        push @cmdargs, "-I", $out_iface;
+    }
+}
+
+# The 'ether-size' option is only provided to match overall packet data size
+# as in IOS and hence you cannot use with 'size'
+die "ping: options 'size' and 'ether-size' cannot be specified together\n"
+  if ( defined($size) && defined($ether_size) );
+
+exec $cmd, @cmdargs, $host;

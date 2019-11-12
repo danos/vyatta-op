@@ -1,0 +1,3 @@
+scripts/vyatta-op-show-monitoring opt/vyatta/bin
+opt/vyatta/share/vyatta-op/templates/show/monitoring
+yang/vyatta-op-show-monitoring-v1.yang usr/share/configd/yang

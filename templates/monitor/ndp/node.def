@@ -1,0 +1,2 @@
+help: Monitor IPv6 Neighbor Discovery Protocol (NDP)
+run: ip -6 monitor neigh

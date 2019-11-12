@@ -1,0 +1,7 @@
+#!/bin/bash
+# Implementation of the "show monitoring" operational command
+
+echo "------------------------------"
+echo "  Protocol monitoring status"
+echo "------------------------------"
+${vyatta_bindir}/opc show monitoring protocols

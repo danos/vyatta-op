@@ -1,0 +1,5 @@
+help: Bash builtin set command
+allowed: echo -n '<OPTION>'
+run: builtin $*
+local: true
+include: /set/node.tag

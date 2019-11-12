@@ -1,0 +1,3 @@
+allowed: ${vyatta_bindir}/vyatta-show-interfaces.pl --action=allowed -vrf=$4
+help: interface
+run: chvrf "$4" iptraf-ng -i "$6"

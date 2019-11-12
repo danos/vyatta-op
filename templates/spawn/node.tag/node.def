@@ -1,0 +1,3 @@
+help: Command to run
+run: $2
+local: true

@@ -1,0 +1,210 @@
+Source: vyatta-op
+Section: contrib/net
+Priority: extra
+Maintainer: Vyatta Package Maintainers <DL-vyatta-help@att.com>
+Build-Depends:
+ autoconf,
+ automake,
+ autotools-dev,
+ config-package-dev (>= 5.0),
+ cpio,
+ debhelper (>= 9),
+ dh-autoreconf,
+ dh-yang,
+ libjansson-dev,
+ libmnl-dev,
+ libparse-syslog-perl,
+ shunit2
+Standards-Version: 3.9.8
+
+Package: vyatta-op
+Architecture: any
+Depends:
+ libjansson4,
+ mail-transport-agent,
+ vyatta-bash,
+ vyatta-cfg (>= 0.107),
+ vyatta-op-shell,
+ vyatta-system,
+ ${misc:Depends},
+ ${shlibs:Depends}
+Provides: ${diverted-files}
+Conflicts: ${diverted-files}
+Replaces: vyatta-serial
+Suggests: dialog, ncurses-bin (>= 5.5-5), util-linux (>= 2.13-5)
+Description: bash operational command completion
+ Vyatta operational command bash completion script and base templates
+
+Package: vyatta-op-network
+Architecture: any
+Depends:
+ iptraf-ng,
+ iputils-ping (>= 3:20161105-1vyatta2),
+ libnetaddr-ip-perl,
+ net-tools,
+ traceroute,
+ vplane-config (>= 0.21.20),
+ vyatta-op,
+ vyatta-ping,
+ ${misc:Depends},
+ ${shlibs:Depends}
+Replaces: vyatta-op (<< 1.0)
+Breaks: vyatta-op (<< 1.0)
+Description: Op mode network commands
+ Operational mode commands for general networking functions
+
+Package: vyatta-op-network-routing-instance
+Architecture: all
+Depends:
+ chvrf,
+ libvyatta-vrfmanager-perl,
+ vrf-manager (>= 2.0),
+ vyatta-op-network,
+ ${misc:Depends},
+ ${shlibs:Depends}
+Description: Op mode network commands with VRF support
+ Operational mode commands with VRF support having
+ 'routing-instance' option for general networking functions
+
+Package: vyatta-op-v1-yang
+Architecture: all
+Depends: vyatta-op-network (>= 1.0), ${misc:Depends}, ${yang:Depends}
+Description: Yang module for operational RPCs
+ The YANG module for vyatta-op's RPCs
+
+Package: vyatta-op-routing-instance-v1-yang
+Architecture: all
+Depends:
+ vyatta-op-network-routing-instance,
+ ${misc:Depends},
+ ${shlibs:Depends},
+ ${yang:Depends}
+Description: Yang module for routing-instance option to operational RPCs
+ The YANG module for vyatta-op-routing-instance-v1-yang to augment
+ 'routing-instance' option to vyatta-op's RPCs
+
+Package: vyatta-op-add-v1-yang
+Architecture: all
+Depends: ${yang:Depends}
+Description: Yang module for operational add command
+ The YANG module for vyatta-op's add command
+
+Package: vyatta-op-clear-v1-yang
+Architecture: all
+Depends: ${yang:Depends}
+Description: Yang module for operational clear command
+ The YANG module for vyatta-op's clear command
+
+Package: vyatta-op-clone-v1-yang
+Architecture: all
+Depends: ${yang:Depends}
+Description: Yang module for operational clone command
+ The YANG module for vyatta-op's clone command
+
+Package: vyatta-op-copy-v1-yang
+Architecture: all
+Depends: ${yang:Depends}
+Description: Yang module for operational copy command
+ The YANG module for vyatta-op's copy command
+
+Package: vyatta-op-install-v1-yang
+Architecture: all
+Depends: ${yang:Depends}
+Description: Yang module for operational install command
+ The YANG module for vyatta-op's install command
+
+Package: vyatta-op-monitor-v1-yang
+Architecture: all
+Depends: ${yang:Depends}
+Description: Yang module for operational monitor command
+ The YANG module for vyatta-op's monitor command
+
+Package: vyatta-op-rename-v1-yang
+Architecture: all
+Depends: ${yang:Depends}
+Description: Yang module for operational rename command
+ The YANG module for vyatta-op's rename command
+
+Package: vyatta-op-set-v1-yang
+Architecture: all
+Depends: ${yang:Depends}
+Description: Yang module for operational set command
+ The YANG module for vyatta-op's set command
+
+Package: vyatta-op-show-v1-yang
+Architecture: all
+Depends: ${yang:Depends}
+Description: Yang module for operational show command
+ The YANG module for vyatta-op's show command
+
+Package: vyatta-op-show-monitoring-v1-yang
+Architecture: all
+Depends: ${misc:Depends}, ${yang:Depends}
+Description: YANG module for "show monitoring" op command
+ The YANG module for the "show monitoring" operational command.
+
+Package: vyatta-op-delete-v1-yang
+Architecture: all
+Depends: ${yang:Depends}
+Description: Yang module for operational delete command
+ The YANG module for vyatta-op's delete command
+
+Package: vyatta-op-generate-v1-yang
+Architecture: all
+Depends: ${yang:Depends}
+Description: Yang module for operational generate command
+ The YANG module for vyatta-op's generate command
+
+Package: vyatta-op-request-v1-yang
+Architecture: all
+Depends: ${yang:Depends}
+Description: Yang module for operational request command
+ The YANG module for vyatta-op's request command
+
+Package: vyatta-op-reset-v1-yang
+Architecture: all
+Depends: ${yang:Depends}
+Description: Yang module for operational reset command
+ The YANG module for vyatta-op's reset command
+
+Package: vyatta-op-update-v1-yang
+Architecture: all
+Depends: ${yang:Depends}
+Description: Yang module for operational update command
+ The YANG module for vyatta-op's update command
+
+Package: vyatta-op-show-ip-ipv6-route-forward-v1-yang
+Architecture: all
+Depends: vyatta-op-network, ${yang:Depends}
+Description: YANG module for kernel route table show command
+ The YANG module for "show ip|ipv6 route forward"
+
+Package: vyatta-op-show-ip-ipv6-route-forward-routing-instance-v1-yang
+Architecture: all
+Depends: vyatta-op-network-routing-instance, ${yang:Depends}
+Description: YANG module for kernel route table in routing instances show command
+ The YANG module for "show ip|ipv6 route routing-instance <i> forward"
+
+Package: vyatta-op-ping-v1-yang
+Architecture: all
+Depends: vyatta-op-network, ${yang:Depends}
+Description: Yang module for operational ping command
+ The YANG module for vyatta-op's ping command
+
+Package: vyatta-op-ping-routing-instance-v1-yang
+Architecture: all
+Depends: ${yang:Depends}
+Description: Yang module for operational ping routing-instance command
+ The YANG module for vyatta-op's ping routing-instance command
+
+Package: vyatta-op-traceroute-v1-yang
+Architecture: all
+Depends: vyatta-op-network, ${yang:Depends}
+Description: Yang module for operational traceroute command
+ The YANG module for vyatta-op's traceroute command
+
+Package: vyatta-op-traceroute-routing-instance-v1-yang
+Architecture: all
+Depends: ${yang:Depends}
+Description: Yang module for operational traceroute routing-instance command
+ The YANG module for vyatta-op's traceroute routing-instance command

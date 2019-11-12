@@ -1,0 +1,4 @@
+vyatta-op: file-in-unusual-dir
+vyatta-op: dir-or-file-in-opt
+vyatta-op: depends-on-obsolete-package depends: vyatta-bash
+vyatta-op: unusual-interpreter opt/vyatta/bin/vyatta-op-cmd-wrapper #!/bin/vbash
