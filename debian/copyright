@@ -1,12 +1,12 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 
 Files: *
-Copyright: 2017-2019, AT&T Intellectual Property.
-           2014-2016, Brocade Communications Systems, Inc.
-           2010-2014, Vyatta, Inc.
+Copyright: 2014-2016, Brocade Communications Systems, Inc.
+           2011-2014, Vyatta, Inc.
+           2017-2019, AT&T Intellectual Property.
 License: GPL-2.0
 
-Files: yang/*.yang
+Files: yang/vyatta-op-install-v1.yang yang/vyatta-op-traceroute-v1.yang yang/vyatta-op-update-v1.yang yang/vyatta-op-clone-v1.yang yang/vyatta-op-monitor-v1.yang yang/vyatta-op-v1.yang yang/vyatta-op-show-ip-ipv6-route-forward-v1.yang yang/vyatta-op-show-ip-ipv6-route-forward-routing-instance-v1.yang yang/vyatta-op-show-monitoring-v1.yang yang/vyatta-op-add-v1.yang yang/vyatta-op-reset-v1.yang yang/vyatta-op-show-v1.yang yang/vyatta-op-set-v1.yang yang/vyatta-op-rename-v1.yang yang/vyatta-op-clear-v1.yang yang/vyatta-op-delete-v1.yang yang/vyatta-op-copy-v1.yang yang/vyatta-op-ping-v1.yang yang/vyatta-op-traceroute-routing-instance-v1.yang yang/vyatta-op-ping-routing-instance-v1.yang yang/vyatta-op-request-v1.yang yang/vyatta-op-generate-v1.yang yang/vyatta-op-routing-instance-v1.yang
 Copyright: 2017-2019, AT&T Intellectual Property.
            2014-2017, Brocade Communications Systems, Inc.
 License: BSD-3-Clause
@@ -14,6 +14,12 @@ License: BSD-3-Clause
 Files: src/yangop-route/hash-string.h src/yangop-route/hash-table.c src/yangop-route/hash-string.c src/yangop-route/hash-table.h
 Copyright: 2005-2008, Simon Howard.
 License: ISC
+
+Files: functions/interpreter/vyatta-image-complete functions/interpreter/vyatta-common
+Copyright: 2010-2013, Vyatta, Inc.
+           2019, AT&T Intellectual Property.
+           2014-2015, Brocade Communications Systems, Inc.
+License: LGPL-2.1
 
 License: GPL-2.0
  This program is free software; you can redistribute it and/or modify it under
@@ -59,6 +65,7 @@ License: BSD-3-Clause
 License: ISC
  ISC License
  .
+ .
  Permission to use, copy, modify, and/or distribute this software for any
  purpose with or without fee is hereby granted, provided that the above
  copyright notice and this permission notice appear in all copies.
@@ -70,4 +77,21 @@ License: ISC
  DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
  TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
  OF THIS SOFTWARE.
+
+License: LGPL-2.1
+ This library is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the Free
+ Software Foundation; version 2.1.
+ .
+ This library is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ details.
+ .
+ You should have received a copy of the GNU Lesser General Public License along
+ with this library; if not, write to the Free Software Foundation, Inc., 51
+ Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ .
+ On Debian systems, the full text of the GNU Lesser General Public License
+ version 2.1 can be found in the file `/usr/share/common-licenses/LGPL-2.1'.
 

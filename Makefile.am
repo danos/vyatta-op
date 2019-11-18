@@ -4,6 +4,7 @@ AM_CFLAGS = -g -I src -Wall -Wextra -Werror
 
 opdir		 = $(datadir)/vyatta-op/templates
 yangdir		 = /usr/share/configd/yang
+techsprtdir	 = $(datadir)/vyatta-op/functions/tech-support.d
 
 interpdir = $(datadir)/vyatta-op/functions/interpreter
 interp_DATA = functions/interpreter/vyatta-common
@@ -36,3 +37,5 @@ install-exec-hook:
 	cd templates; $(cpiop) $(DESTDIR)$(opdir)
 	mkdir -p $(DESTDIR)$(yangdir)
 	cd yang && $(cpiop) $(DESTDIR)$(yangdir)
+	mkdir -p $(DESTDIR)$(techsprtdir)
+	cp scripts/0610-vyatta-op-network $(DESTDIR)$(techsprtdir)

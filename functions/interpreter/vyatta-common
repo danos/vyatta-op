@@ -8,7 +8,7 @@
 # Copyright (c) 2014-2015 by Brocade Communications Systems, Inc.
 # All rights reserved.
 #
-# SPDX-License-Identifier: GPL-2.0-only
+# SPDX-License-Identifier: LGPL-2.1-only
 
 
 # ensure ! is not used by shell for history, as it breaks CLI which uses !

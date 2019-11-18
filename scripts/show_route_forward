@@ -53,7 +53,7 @@ function find_vrf_routes()
     local="/^\(anycast\|broadcast\|local\|::1 dev vrf\|127\.0\.0\.0\/8 dev vrf\)/d"
     unreach="/unreachable default.*metric 4278198272/d"
     for rd in "$@"; do
-        table=$(/opt/vyatta/sbin/getvrftable --pbr-table $rd 254)
+        table=$(/opt/vyatta/sbin/getvrftable --pbr-table $rd 254 2> /dev/null)
         routes=$(eval "/usr/sbin/chvrf $rd ip $ARGS route list table $table $r" | sed -e "$rdid" -e "$local" -e "$unreach")
         print_routes "$rd" "${routes[@]}"
     done

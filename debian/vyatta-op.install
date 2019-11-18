@@ -1,5 +1,5 @@
 opt/vyatta/bin/vyatta-op-cmd-wrapper
-opt/vyatta/share/vyatta-op/functions
+opt/vyatta/share/vyatta-op/functions/interpreter
 opt/vyatta/share/vyatta-op/templates/add
 opt/vyatta/share/vyatta-op/templates/monitor/command
 opt/vyatta/share/vyatta-op/templates/rename
