@@ -208,3 +208,9 @@ Architecture: all
 Depends: ${yang:Depends}
 Description: Yang module for operational traceroute routing-instance command
  The YANG module for vyatta-op's traceroute routing-instance command
+
+Package: vyatta-op-restart-v1-yang
+Architecture: all
+Depends: ${yang:Depends}
+Description: Yang module for operational restart command
+ The YANG module for vyatta-op's restart command
