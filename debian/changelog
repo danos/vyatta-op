@@ -1,3 +1,10 @@
+vyatta-op (2.19) unstable; urgency=medium
+
+  [ Daniel Gollub ]
+  * yang: introduce Yang data-model for restart top-level command
+
+ -- William Ivory <william.ivory@intl.att.com>  Wed, 22 Jul 2020 11:51:17 +0100
+
 vyatta-op (2.18) unstable; urgency=medium
 
   [ Mark Gillott ]
