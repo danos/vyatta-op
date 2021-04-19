@@ -6,3 +6,4 @@ opt/vyatta/share/vyatta-op/templates/rename
 opt/vyatta/share/vyatta-op/templates/set
 opt/vyatta/share/vyatta-op/templates/spawn
 opt/vyatta/share/vyatta-op/templates/start
+opt/vyatta/share/vyatta-op/templates/stop
