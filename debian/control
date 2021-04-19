@@ -167,6 +167,18 @@ Depends: ${yang:Depends}
 Description: Yang module for operational reset command
  The YANG module for vyatta-op's reset command
 
+Package: vyatta-op-start-v1-yang
+Architecture: all
+Depends: ${yang:Depends}
+Description: Yang module for operational start command
+ The YANG module for vyatta-op's start command
+
+Package: vyatta-op-stop-v1-yang
+Architecture: all
+Depends: ${yang:Depends}
+Description: Yang module for operational stop command
+ The YANG module for vyatta-op's stop command
+
 Package: vyatta-op-update-v1-yang
 Architecture: all
 Depends: ${yang:Depends}
