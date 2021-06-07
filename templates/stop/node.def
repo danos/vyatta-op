@@ -1,4 +1,4 @@
-help: Stop a service
 # Note - This file is needed for backward compatibility with op-mode commands
 # under vyatta-op/templates. The help for the show command comes from
 # vyatta-op-stop-v1.yang
+help: Stop a service

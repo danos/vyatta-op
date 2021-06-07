@@ -1,3 +1,4 @@
 # Note - This file is needed for backward compatibility with op-mode commands
 # under vyatta-op/templates. The help for the show command comes from
 # vyatta-op-start-v1.yang
+help: Start a service
