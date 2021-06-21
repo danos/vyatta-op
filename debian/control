@@ -43,7 +43,7 @@ Depends:
  libnetaddr-ip-perl,
  net-tools,
  traceroute,
- vplane-config (>= 0.21.20),
+ vplane-config (>= 2.96),
  vyatta-op,
  vyatta-ping,
  ${misc:Depends},
