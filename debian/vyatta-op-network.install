@@ -13,7 +13,6 @@ opt/vyatta/share/vyatta-op/templates/monitor/ndp
 opt/vyatta/share/vyatta-op/templates/monitor/traceroute
 opt/vyatta/share/vyatta-op/templates/reset/ip
 opt/vyatta/share/vyatta-op/templates/reset/ipv6
-opt/vyatta/share/vyatta-op/templates/show/arp
 opt/vyatta/share/vyatta-op/templates/show/ip/groups
 opt/vyatta/share/vyatta-op/templates/show/ipv6/groups
 opt/vyatta/share/vyatta-op/templates/show/ipv6/neighbors

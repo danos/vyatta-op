@@ -1,2 +1,0 @@
-help: Show Address Resolution Protocol (ARP) information
-run: vplane-arp arp-all
