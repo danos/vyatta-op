@@ -1,3 +1,14 @@
+vyatta-op (2.20) unstable; urgency=medium
+
+  [ Charles (Chas) Williams ]
+  * yang: add start and stop operational YANG (Bugfix: VRVDR-54915)
+  * Fix start/stop stub templates (Bugfix: VRVDR-54989)
+
+  [ ck407g ]
+  * Python conversion of legacy code in vplane-arp.pl
+
+ -- Paul Carson <paul.carson@intl.att.com>  Thu, 01 Jul 2021 14:14:34 +0100
+
 vyatta-op (2.19) unstable; urgency=medium
 
   [ Daniel Gollub ]
