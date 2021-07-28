@@ -2,6 +2,11 @@
 # Implementation of the "show monitoring" operational command
 
 echo "------------------------------"
+echo "  Dataplane monitoring status"
+echo "------------------------------"
+${vyatta_bindir}/opc show monitoring dataplane
+
+echo "------------------------------"
 echo "  Protocol monitoring status"
 echo "------------------------------"
 ${vyatta_bindir}/opc show monitoring protocols
